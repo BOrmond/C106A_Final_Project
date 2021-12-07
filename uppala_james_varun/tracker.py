@@ -46,7 +46,7 @@ class tracker():
             r_center = np.argmax(np.convolve(window,r_sum))-window_width/2+int(warped.shape[1]/2)
             
             # Add what we found for the 1st layer
-            window_centroids.append((l_center,r_center))
+            window_centroids.append((l_center,int(warped.shape[0]-window_height/2)))
             
             # Go thru each layer looking for max pixel locations
             for level in range(1,(int)(4*warped.shape[0]/window_height)):
@@ -60,12 +60,12 @@ class tracker():
                 l_max_index = int(min(l_center+offset+margin,warped.shape[1]))
                 l_center = np.argmax(conv_signal[l_min_index:l_max_index])+l_min_index-offset
                 
-                print(np.max(conv_signal[l_min_index:l_max_index]))
-                print(hit_number)
+                #print(np.max(conv_signal[l_min_index:l_max_index]))
+                #print(hit_number)
                 
                 # If x < best_m * y + best_b, then we are outside the road per the horizon line.
-                if (int(warped.shape[0]-((level*window_height/4) + window_height)) < m * (l_center - window_width / 2) + b) or \
-                   (int(warped.shape[0]-((level*window_height/4) + window_height)) < m * (l_center + window_width / 2) + b) or \
+                if (int(warped.shape[0]-((level*window_height/4)) + window_height/2) < m * (l_center - window_width / 2) + b) or \
+                   (int(warped.shape[0]-((level*window_height/4)) + window_height/2) < m * (l_center + window_width / 2) + b) or \
                    (np.max(conv_signal[l_min_index:l_max_index]) < hit_number):
                     break
                 
@@ -73,8 +73,8 @@ class tracker():
                 r_min_index = int(max(r_center+offset-margin,0))
                 r_max_index = int(min(r_center+offset+margin,warped.shape[1]))
                 r_center = np.argmax(conv_signal[r_min_index:r_max_index])+r_min_index-offset
-                # Add what we found for that layer
-                window_centroids.append((l_center,r_center))
+                # Add what we found for that layer: (x, y)
+                window_centroids.append((l_center,int(warped.shape[0]-((level*window_height/4) + window_height/2))))
             return window_centroids
             """
             self.recent_centers.append(window_centroids)

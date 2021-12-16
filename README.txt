@@ -2,4 +2,4 @@ The code for the initial computer vision pipeline is in Image_Processing.ipynb. 
 
 The code for the final computer vision pipeline is in uppala_james_varun/AdvancedLaneLines.ipynb - please use the version in the v2 branch!
 
-The original still frames in the main folder.
+The original still frames are in the main folder.
